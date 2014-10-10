@@ -13,16 +13,15 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
-import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
 @EnableJpaRepositories(
-		entityManagerFactoryRef = "orderEntityManager",
-		transactionManagerRef = "orderTransactionManager",
+		entityManagerFactoryRef = "customerEntityFactory",
+		transactionManagerRef = "customerTransactionManager",
 		basePackages = {"com.mm.repository.customer"})
 public class CustomerDbConfig {
 	
-	@Bean(name = "customerEntityManager")
+	@Bean(name = "customerEntityFactory")
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory(){
 		LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
 		em.setDataSource(dataSource());
@@ -49,7 +48,7 @@ public class CustomerDbConfig {
 	@Bean
 	public DataSource dataSource(){
 		return DataSourceBuilder.create()
-				.url("jdbc:h2:mem:customer:H2")
+				.url("jdbc:h2:mem:customer:H2' ~/customer/create.sql'")
 				.driverClassName("org.h2.Driver")
 				.username("sa")
 				.password("")
@@ -57,7 +56,7 @@ public class CustomerDbConfig {
 	}	
 	
 	@Bean(name = "customerTransactionManager")
-	public PlatformTransactionManager transactionManager(EntityManagerFactory emf){
+	public JpaTransactionManager transactionManager(EntityManagerFactory emf){
 		JpaTransactionManager transactionManager = new JpaTransactionManager();
 		transactionManager.setEntityManagerFactory(emf);
 		
