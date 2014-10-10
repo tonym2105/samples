@@ -60,7 +60,7 @@ public class OrderDbConfig{
 	}	
 	
 	@Bean(name = "orderTransactionManager")
-	public PlatformTransactionManager transactionManager(EntityManagerFactory emf){
+	public JpaTransactionManager transactionManager(EntityManagerFactory emf){
 		JpaTransactionManager transactionManager = new JpaTransactionManager();
 		transactionManager.setEntityManagerFactory(emf);
 		
