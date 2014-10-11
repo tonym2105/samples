@@ -16,22 +16,20 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
 @Configuration
 @EnableJpaRepositories(
-		entityManagerFactoryRef = "customerEntityFactory",
-		transactionManagerRef = "customerTransactionManager",
-		basePackages = {"com.mm.repository.customer"})
+		 	entityManagerFactoryRef = "customerEntityManager",
+		    transactionManagerRef = "customerTransactionManager",
+		    basePackages = {"com.mm.boot.multidb.repository.customer"})
 public class CustomerDbConfig {
 	
-	@Bean(name = "customerEntityFactory")
+	@Bean(name = "customerEntityManager")
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory(){
+		JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
 		LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
 		em.setDataSource(dataSource());
-		em.setPackagesToScan(new String[] {"com.mm.domain.customer"});
-		
-		JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+		em.setPackagesToScan(new String[] {"com.mm.boot.multidb.model.customer"});
 		em.setJpaVendorAdapter(vendorAdapter);
 		em.setJpaProperties(additionalJpaProperties());
-		em.setPersistenceUnitName("customerPersistence");
-		em.setPackagesToScan("com.mm.domain.customer");
+		em.setPersistenceUnitName("customers");
 
 		return em;
 	}
@@ -56,9 +54,9 @@ public class CustomerDbConfig {
 	}	
 	
 	@Bean(name = "customerTransactionManager")
-	public JpaTransactionManager transactionManager(EntityManagerFactory emf){
+	public JpaTransactionManager transactionManager(EntityManagerFactory customerEntityManager){
 		JpaTransactionManager transactionManager = new JpaTransactionManager();
-		transactionManager.setEntityManagerFactory(emf);
+		transactionManager.setEntityManagerFactory(customerEntityManager);
 		
 		return transactionManager;
 	}

@@ -18,22 +18,20 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
 @EnableJpaRepositories(
-		entityManagerFactoryRef = "orderEntityManager",
-		transactionManagerRef = "orderTransactionManager",
-		basePackages = {"com.mm.repository.order"})
+	    entityManagerFactoryRef = "orderEntityManager",
+	    transactionManagerRef = "orderTransactionManager",
+	    basePackages = {"com.mm.boot.multidb.repository.order"})
 public class OrderDbConfig{
 
 	@Bean(name = "orderEntityManager")
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory(){
+		JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
 		LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
 		em.setDataSource(dataSource());
-		em.setPackagesToScan(new String[] {"com.mm.domain.order"});
-		
-		JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+		em.setPackagesToScan(new String[] {"com.mm.boot.multidb.model.order"});
 		em.setJpaVendorAdapter(vendorAdapter);
 		em.setJpaProperties(additionalJpaProperties());
-		em.setPersistenceUnitName("orderPersistence");
-		em.setPackagesToScan("com.mm.domain.order");
+		em.setPersistenceUnitName("orders");
 
 		return em;
 	}
@@ -60,9 +58,9 @@ public class OrderDbConfig{
 	}	
 	
 	@Bean(name = "orderTransactionManager")
-	public JpaTransactionManager transactionManager(EntityManagerFactory emf){
+	public JpaTransactionManager transactionManager(EntityManagerFactory orderEntityManager){
 		JpaTransactionManager transactionManager = new JpaTransactionManager();
-		transactionManager.setEntityManagerFactory(emf);
+		transactionManager.setEntityManagerFactory(orderEntityManager);
 		
 		return transactionManager;
 	}
