@@ -39,8 +39,8 @@ public class OrderDbConfig{
 	//TODO: Can these be ontained from FlywayDB
 	Properties additionalJpaProperties(){
 		Properties properties = new Properties();
-		properties.setProperty("hibernate.hbm2ddl.auto", "create-drop");
-		properties.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
+		properties.setProperty("hibernate.hbm2ddl.auto", "update");
+		properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
 		properties.setProperty("hibernate.show_sql", "true");
 		
 		return properties;
@@ -50,10 +50,10 @@ public class OrderDbConfig{
 	@Bean
 	public DataSource dataSource(){
 		return DataSourceBuilder.create()
-				.url("jdbc:h2:mem:order:H2")
-				.driverClassName("org.h2.Driver")
-				.username("sa")
-				.password("")
+				.url("jdbc:mysql://localhost:3306/order")
+				.driverClassName("com.mysql.jdbc.Driver")
+				.username("root")
+				.password("swisher459")
 				.build();
 	}	
 	

@@ -23,8 +23,8 @@ public class Order {
 	@Column(name = "code", nullable = false)
 	private Integer code;
 	
-	@Column(name = "quality", nullable = false)
-	private Integer quality;
+	@Column(name = "quantity", nullable = false)
+	private Integer quantity;
 
 	public Integer getId() {
 		return id;
@@ -42,12 +42,12 @@ public class Order {
 		this.code = code;
 	}
 
-	public Integer getQuality() {
-		return quality;
+	public Integer getQuantity() {
+		return quantity;
 	}
 
-	public void setQuality(Integer quality) {
-		this.quality = quality;
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
 	}
 	
 	
